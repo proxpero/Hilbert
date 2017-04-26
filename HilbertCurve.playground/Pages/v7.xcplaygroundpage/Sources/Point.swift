@@ -9,24 +9,35 @@ public struct Point {
         self.y = y
     }
 
-    public mutating func rotating(in quadrant: Quadrant, at level: Int) {
+    public func flipped(in quadrant: Quadrant, at level: Int) -> Point {
+        var result = self
         if quadrant.isBottom {
             if !quadrant.isLeft {
-                self = Point(
-                    x: level - 1 - x,
-                    y: level - 1 - y
+                result = Point(
+                    x: level - 1 - result.x,
+                    y: level - 1 - result.y
                 )
             }
-            self = Point(x: y, y: x)
+            result = Point(x: result.y, y: result.x)
         }
+        return result
+    }
+    
+    mutating public func flipping(in quadrant: Quadrant, at level: Int) {
+        self = flipped(in: quadrant, at: level)
     }
 
-    public mutating func transforming(in quadrant: Quadrant, at level: Int) {
-        self = Point(
-            x: x + (quadrant.isLeft ? 0 : level),
-            y: y + (quadrant.isBottom ? 0 : level)
+    public func stretched(in quadrant: Quadrant, at level: Int) -> Point {
+        return Point(
+            x: self.x + (quadrant.isLeft ? 0 : level),
+            y: self.y + (quadrant.isBottom ? 0 : level)
         )
     }
+
+    mutating public func stretching(in quadrant: Quadrant, at level: Int) {
+        self = stretched(in: quadrant, at: level)
+    }
+    
 }
 
 extension Point: CustomStringConvertible {

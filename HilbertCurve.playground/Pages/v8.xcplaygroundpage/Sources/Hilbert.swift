@@ -3,6 +3,7 @@ public struct HilbertCurve {
 
     fileprivate let edge: Int
     fileprivate var points: Array<Point> = []
+    
     public init(edge: Int) {
         self.edge = edge
         self.points = (0 ..< edge*edge).map(point)
@@ -21,8 +22,8 @@ public struct HilbertCurve {
 
         for level in levels {
             let quadrant = Quadrant(distance: temp)
-            result.rotating(in: quadrant, at: level)
-            result.transforming(in: quadrant, at: level)
+            result.flipping(in: quadrant, at: level)
+            result.stretching(in: quadrant, at: level)
             temp /= 4
         }
 
@@ -43,7 +44,7 @@ public struct HilbertCurve {
         for level in levels {
             let quadrant = Quadrant(point: point, level: level)
             result += quadrant.increment(with: level)
-            point.rotating(in: quadrant, at: level)
+            point.flipping(in: quadrant, at: level)
         }
         
         return result
